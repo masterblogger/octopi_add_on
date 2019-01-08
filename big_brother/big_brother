@@ -1,0 +1,56 @@
+#!/bin/sh
+
+   #
+    #    This program is free software: you can redistribute it and/or modify
+    #    it under the terms of the GNU General Public License as published by
+    #    the Free Software Foundation, either version 3 of the License, or
+    #    (at your option) any later version.
+    #
+    #    This program is distributed in the hope that it will be useful,
+    #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    #    GNU General Public License for more details.
+    #
+    #    You should have received a copy of the GNU General Public License
+    #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+#Bash script
+#Script will sent a picture which was captured from mjpg-stramer
+#to default mstmp mail adress
+#verision 0.0
+#date 2018 december 02
+#ATTENTION you have tp createo the directory picsent_tmp befor executing this script!!!
+
+#you need to run this script following packages (which aren't default whith the octopi mod)
+#msmtp, mutt, imagemagick
+
+
+directory="/home/PAHTTOYOURTEMPORARYDIRECTORY"
+
+cd $directory
+
+rmdir picsent_tmp
+
+mkdir picsent_tmp
+cd 
+cd  picsent_tmp
+
+
+
+#take picture as jpg from your webcam
+ffmpeg -f MJPEG -y -i  http://octopi.local/webcam/?action=stream -r 1 -vframes 1 -q:v 1 snapshot.jpg
+
+
+#sent picture
+
+echo "3D-Print Job " | mutt -a snapshot.jpg -s "report" -- name@your_mail.xxx
+
+
+
+#delete picture
+rm snapshot.jpg
+#rm snapshot.pnm
+rm snapshot.txt
+
+exit 0
